@@ -68,6 +68,33 @@
       font-weight: bold;
       font-size: 20px;
     }
+
+    /* 🎉 アニメーション */
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      60% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    .clear {
+      animation: pop 0.5s ease;
+      color: #ff4d6d;
+    }
+
+    .confetti {
+      position: fixed;
+      top: -10px;
+      width: 8px;
+      height: 8px;
+      animation: fall 2s linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(360deg);
+      }
+    }
+
   </style>
 </head>
 
@@ -117,12 +144,28 @@ function check() {
 
   attempts++;
 
+  let result = document.getElementById("result");
+
   if (hit === 3) {
-    document.getElementById("result").textContent =
-      "正解！🎉 " + attempts + "回でクリア！";
+    result.textContent = "正解！🎉 " + attempts + "回でクリア！";
+    result.classList.add("clear");
+    launchConfetti();
   } else {
-    document.getElementById("result").textContent =
+    result.textContent =
       hit + " Hit / " + blow + " Blow（" + attempts + "回）";
+  }
+}
+
+/* 紙吹雪 */
+function launchConfetti() {
+  for (let i = 0; i < 30; i++) {
+    let c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.background = "hsl(" + Math.random() * 360 + ",100%,50%)";
+    document.body.appendChild(c);
+
+    setTimeout(() => c.remove(), 2000);
   }
 }
 </script>
